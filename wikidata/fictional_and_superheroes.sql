@@ -4,9 +4,9 @@ SELECT en_wiki, SUM(requests) requests,
 FROM [fh-bigquery:wikipedia.pagecounts_201602_en_top365k] a
 JOIN (
   SELECT en_wiki, 
-    EVERY(instance_of.numeric_id!=188784) WITHIN RECORD superhero,
-    EVERY(instance_of.numeric_id!=95074) WITHIN RECORD fictional_character,
-    EVERY(occupation.numeric_id!=188784) WITHIN RECORD occupation_superhero,
+    NOT EVERY(instance_of.numeric_id!=188784) WITHIN RECORD superhero,
+    NOT EVERY(instance_of.numeric_id!=95074) WITHIN RECORD fictional_character,
+    NOT EVERY(occupation.numeric_id!=188784) WITHIN RECORD occupation_superhero,
   FROM [wikidata.latest_en_v1] 
   OMIT RECORD IF (EVERY(instance_of.numeric_id!=188784)
   AND EVERY(instance_of.numeric_id!=95074)
