@@ -10,5 +10,5 @@ bq load --field_delimiter="tab" --max_bad_records 1 --replace wikidata.latest_ra
 
 # Download: 4.1 GB, 2 MB/s, 35 minutes
 # lbunzip2: 65 GB, 7 minutes (16 cpus)
-# gsutil cp: 65 GB, 3 minutes (16 cpus)
+# gsutil cp: 65 GB, 3 minutes (4 cpus)
 # bq: 3 minutes ingest
