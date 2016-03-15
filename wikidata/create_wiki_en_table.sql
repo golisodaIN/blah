@@ -26,6 +26,7 @@ title, item,
   {name: 'occupation', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'instrument', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'genre', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
+  {name: 'industry', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'coordinate_location', type:'record', mode:'repeated', fields: [{name: 'latitude', type: 'float'}, {name: 'longitude', type: 'float'}, {name: 'altitude', type: 'float'}]},
   {name: 'item', type:'string'}
   ]",
@@ -88,9 +89,10 @@ title, item,
   country_of_citizenship=snaks(obj, 'P27', 'numeric_id');
   country=snaks(obj, 'P17', 'numeric_id');
   occupation=snaks(obj, 'P106', 'numeric_id');
-  instrument=snaks(obj, 'P1303', 'numeric_id')
-  genre=snaks(obj, 'P136', 'numeric_id')
-  coordinate_location=snaksLoc(obj, 'P625')
+  instrument=snaks(obj, 'P1303', 'numeric_id');
+  genre=snaks(obj, 'P136', 'numeric_id');
+  industry=snaks(obj, 'P452', 'numeric_id');
+  coordinate_location=snaksLoc(obj, 'P625');
   emit({
     id: obj.id,
     en_wiki: obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null,
@@ -111,9 +113,9 @@ title, item,
     occupation: occupation,
     instrument: instrument,
     genre: genre,
+    industry: industry,
     coordinate_location: coordinate_location,
     len_item: r.item.length,
     item: r.item
     });  
   }")
-  
