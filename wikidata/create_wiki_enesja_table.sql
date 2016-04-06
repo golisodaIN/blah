@@ -1,4 +1,4 @@
-SELECT *
+SELECT iso_3166_alpha3.value, item
 FROM js(
 (
   SELECT item
@@ -80,6 +80,16 @@ item,
     }
     return snaks
   }
+  function snaksValue(obj, pnumber, name) {
+    var snaks = []
+    for(var i in obj.claims[pnumber]) {
+      if (!obj.claims[pnumber][i].mainsnak.datavalue) continue;
+      var claim = {}
+      claim[name]=obj.claims[pnumber][i].mainsnak.datavalue.value
+      snaks.push(claim) 
+    }
+    return snaks
+  }
   function snaksLoc(obj, pnumber) {
     var snaks = []
     for(var i in obj.claims[pnumber]) {
@@ -106,7 +116,7 @@ item,
   genre=snaks(obj, 'P136', 'numeric_id');
   industry=snaks(obj, 'P452', 'numeric_id');
   coordinate_location=snaksLoc(obj, 'P625');
-  iso_3166_alpha3=snaks(obj, 'P297', 'value');
+  iso_3166_alpha3=snaksValue(obj, 'P298', 'value');
   emit({
     id: obj.id,
     en_wiki: obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null,
