@@ -1,4 +1,4 @@
-SELECT iso_3166_alpha3.value, item
+SELECT *
 FROM js(
 (
   SELECT item
