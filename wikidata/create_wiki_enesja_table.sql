@@ -40,6 +40,7 @@ item,
   {name: 'genre', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'industry', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'coordinate_location', type:'record', mode:'repeated', fields: [{name: 'latitude', type: 'float'}, {name: 'longitude', type: 'float'}, {name: 'altitude', type: 'float'}]},
+  {name: 'iso_3166_alpha3', type:'record', mode:'repeated', fields: [{name: 'value', type: 'string'}]},
   {name: 'item', type:'string'}
   ]",
   "function(r, emit) {
@@ -105,6 +106,7 @@ item,
   genre=snaks(obj, 'P136', 'numeric_id');
   industry=snaks(obj, 'P452', 'numeric_id');
   coordinate_location=snaksLoc(obj, 'P625');
+  iso_3166_alpha3=snaks(obj, 'P297', 'value');
   emit({
     id: obj.id,
     en_wiki: obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null,
@@ -133,6 +135,7 @@ item,
     genre: genre,
     industry: industry,
     coordinate_location: coordinate_location,
+    iso_3166_alpha3: iso_3166_alpha3,
     len_item: r.item.length,
     item: r.item
     });  
