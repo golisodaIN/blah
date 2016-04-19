@@ -122,7 +122,7 @@ item,
   instrument=snaks(obj, 'P1303', 'numeric_id');
   genre=snaks(obj, 'P136', 'numeric_id');
   industry=snaks(obj, 'P452', 'numeric_id');
-  industry=snaks(obj, 'P279', 'numeric_id');
+  subclass_of=snaks(obj, 'P279', 'numeric_id');
   coordinate_location=snaksLoc(obj, 'P625');
   iso_3166_alpha3=snaksValue(obj, 'P298', 'value');
   emit({
