@@ -16,3 +16,18 @@ WHERE language='es'
 GROUP BY title 
 ORDER BY 1 DESC
 LIMIT 100
+
+
+SELECT SUM(requests) reqs, FIRST(en_label)
+FROM [fh-bigquery:wikipedia.pagecounts_201511] a
+JOIN (
+  SELECT es_wiki, en_label, en_wiki, fr_wiki, ja_wiki
+  FROM [fh-bigquery:wikidata.latest_enesjafrde_v1] 
+  WHERE instance_of.numeric_id=31629
+) b
+ON a.title=b.es_wiki
+WHERE language='es'
+GROUP BY title 
+ORDER BY 1 DESC
+LIMIT 100
+
