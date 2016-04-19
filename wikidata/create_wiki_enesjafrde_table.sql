@@ -45,6 +45,7 @@ item,
   {name: 'instrument', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'genre', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'industry', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
+  {name: 'subclass_of', type:'record', mode:'repeated', fields: [{name: 'numeric_id', type: 'integer'}]},
   {name: 'coordinate_location', type:'record', mode:'repeated', fields: [{name: 'latitude', type: 'float'}, {name: 'longitude', type: 'float'}, {name: 'altitude', type: 'float'}]},
   {name: 'iso_3166_alpha3', type:'record', mode:'repeated', fields: [{name: 'value', type: 'string'}]},
   {name: 'item', type:'string'}
@@ -121,6 +122,7 @@ item,
   instrument=snaks(obj, 'P1303', 'numeric_id');
   genre=snaks(obj, 'P136', 'numeric_id');
   industry=snaks(obj, 'P452', 'numeric_id');
+  industry=snaks(obj, 'P279', 'numeric_id');
   coordinate_location=snaksLoc(obj, 'P625');
   iso_3166_alpha3=snaksValue(obj, 'P298', 'value');
   emit({
@@ -156,6 +158,7 @@ item,
     instrument: instrument,
     genre: genre,
     industry: industry,
+    subclass_of: subclass_of,
     coordinate_location: coordinate_location,
     iso_3166_alpha3: iso_3166_alpha3,
     len_item: r.item.length,
