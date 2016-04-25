@@ -34,3 +34,15 @@ ORDER BY 2 DESC
 LIMIT 100
 
 
+Top keys:
+
+SELECT 
+  COUNT(*) c,
+  JSON_EXTRACT_SCALAR(item, '$.tonal.key_key'),
+FROM [fh-bigquery:test_acousticbrainz.lowlevel] 
+GROUP BY 2
+ORDER BY 1 DESC
+LIMIT 100
+
+
+
