@@ -17,3 +17,20 @@ FROM [fh-bigquery:test_acousticbrainz.highlevel]
 GROUP BY 2
 ORDER BY 1 DESC
 LIMIT 100
+
+Correlation between loudness and bpm, by genre:
+
+SELECT 
+  COUNT(*) c,
+  CORR(
+    JSON_EXTRACT_SCALAR(item, '$.lowlevel.average_loudness'),
+    JSON_EXTRACT_SCALAR(item, '$.rhythm.bpm')
+  ),
+  JSON_EXTRACT_SCALAR(item, '$.metadata.tags.genre[0]')
+FROM [fh-bigquery:test_acousticbrainz.lowlevel] 
+GROUP BY 3
+HAVING c>30
+ORDER BY 2 DESC
+LIMIT 100
+
+
