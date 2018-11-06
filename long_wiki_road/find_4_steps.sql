@@ -1,3 +1,6 @@
+# Find the top 4-step path between 2 Wikipedia pages
+# @felipehoffa
+
 SELECT a.a, a.bridge.b, a.c, b.bridge.b b_b, b.c b_c, a.bridge.prob*b.bridge.prob prob
 FROM `fh-bigquery.wikipedia_vt.clicstream_c_comb_clust_a` a
 JOIN `fh-bigquery.wikipedia_vt.clicstream_c_comb_clust_c` b
