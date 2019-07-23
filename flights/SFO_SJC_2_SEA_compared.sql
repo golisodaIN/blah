@@ -13,3 +13,5 @@ FROM (
 )
 GROUP BY 1,Dest
 ORDER BY year DESC
+
+# https://twitter.com/felipehoffa/status/1153469344799547392
