@@ -127,6 +127,7 @@ LANGUAGE js AS """
     de_label: obj.labels.de ? obj.labels.de.value : null,
     de_description: obj.descriptions.de ? obj.descriptions.de.value : null,
     
+    type: obj.type,
     labels: labels, 
     descriptions: descriptions,
     sitelinks: sitelinks,
@@ -149,7 +150,7 @@ LANGUAGE js AS """
 
 """;
 
-CREATE TABLE `temp.wikidata_parsed2`
+CREATE OR REPLACE TABLE `temp.wikidata_parsed3`
 AS
 
 SELECT parse(item).*, item
