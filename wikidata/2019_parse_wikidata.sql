@@ -43,7 +43,7 @@ LANGUAGE js AS """
     return x ? (x.split(' ').join('_')) : null;
   }
   
-  var obj = JSON.parse(item.slice(0, -1));
+  var obj = JSON.parse(item.replace(/,$/, ''));
 
   sitelinks =[];
   for(var i in obj.sitelinks) {
@@ -114,16 +114,16 @@ LANGUAGE js AS """
 
   return {
     id: obj.id,
-    en_wiki: obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null,
+    en_wiki: obj.sitelinks ? (obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null) : null,
     en_label: obj.labels.en ? obj.labels.en.value : null,
     en_description: obj.descriptions.en ? obj.descriptions.en.value : null,
-    ja_wiki: obj.sitelinks.jawiki ? wikiEncode(obj.sitelinks.jawiki.title) : null,
+    ja_wiki: obj.sitelinks ? (obj.sitelinks.jawiki ? wikiEncode(obj.sitelinks.jawiki.title) : null) : null,
     ja_label: obj.labels.ja ? obj.labels.ja.value : null,
     ja_description: obj.descriptions.ja ? obj.descriptions.ja.value : null,
-    es_wiki: obj.sitelinks.eswiki ? wikiEncode(obj.sitelinks.eswiki.title) : null,
+    es_wiki: obj.sitelinks ? (obj.sitelinks.eswiki ? wikiEncode(obj.sitelinks.eswiki.title) : null) : null,
     es_label: obj.labels.es ? obj.labels.es.value : null,
     es_description: obj.descriptions.es ? obj.descriptions.es.value : null,
-    de_wiki: obj.sitelinks.dewiki ? wikiEncode(obj.sitelinks.dewiki.title) : null,
+    de_wiki: obj.sitelinks ? (obj.sitelinks.dewiki ? wikiEncode(obj.sitelinks.dewiki.title) : null) : null,
     de_label: obj.labels.de ? obj.labels.de.value : null,
     de_description: obj.descriptions.de ? obj.descriptions.de.value : null,
     
@@ -150,11 +150,13 @@ LANGUAGE js AS """
 
 """;
 
-CREATE OR REPLACE TABLE `temp.wikidata_parsed3`
+CREATE OR REPLACE TABLE `wikidata.wikidata_latest_20190822_b`
+PARTITION BY fake_date
+CLUSTER BY en_wiki
 AS
 
-SELECT parse(item).*, item
-FROM `fh-bigquery.temp.wikidata_partial` 
+SELECT parse(item).*, item, DATE('2000-01-01') fake_date
+FROM `fh-bigquery.wikidata.latest_raw_20190822`   
 WHERE LENGTH(item)>10
 AND (
   JSON_EXTRACT_SCALAR(item, '$.sitelinks.enwiki.title') IS NOT NULL
@@ -162,4 +164,6 @@ AND (
   JSON_EXTRACT_SCALAR(item, '$.sitelinks.jawiki.title') IS NOT NULL
   OR
   JSON_EXTRACT_SCALAR(item, '$.sitelinks.eswiki.title') IS NOT NULL
+  OR
+  JSON_EXTRACT_SCALAR(item, '$.labels.en.value') IS NOT NULL
 )
