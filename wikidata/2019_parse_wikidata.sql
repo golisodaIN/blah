@@ -114,16 +114,16 @@ LANGUAGE js AS """
 
   return {
     id: obj.id,
-    en_wiki: obj.sitelinks ? (obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null) : null,
+    en_wiki: obj.sitelinks ? (obj.sitelinks.enwiki ? obj.sitelinks.enwiki.encoded : null) : null,
     en_label: obj.labels.en ? obj.labels.en.value : null,
     en_description: obj.descriptions.en ? obj.descriptions.en.value : null,
-    ja_wiki: obj.sitelinks ? (obj.sitelinks.jawiki ? wikiEncode(obj.sitelinks.jawiki.title) : null) : null,
+    ja_wiki: obj.sitelinks ? (obj.sitelinks.jawiki ? obj.sitelinks.jawiki.encoded : null) : null,
     ja_label: obj.labels.ja ? obj.labels.ja.value : null,
     ja_description: obj.descriptions.ja ? obj.descriptions.ja.value : null,
-    es_wiki: obj.sitelinks ? (obj.sitelinks.eswiki ? wikiEncode(obj.sitelinks.eswiki.title) : null) : null,
+    es_wiki: obj.sitelinks ? (obj.sitelinks.eswiki ? obj.sitelinks.eswiki.encoded : null) : null,
     es_label: obj.labels.es ? obj.labels.es.value : null,
     es_description: obj.descriptions.es ? obj.descriptions.es.value : null,
-    de_wiki: obj.sitelinks ? (obj.sitelinks.dewiki ? wikiEncode(obj.sitelinks.dewiki.title) : null) : null,
+    de_wiki: obj.sitelinks ? (obj.sitelinks.dewiki ? obj.sitelinks.dewiki.encoded : null) : null,
     de_label: obj.labels.de ? obj.labels.de.value : null,
     de_description: obj.descriptions.de ? obj.descriptions.de.value : null,
     
