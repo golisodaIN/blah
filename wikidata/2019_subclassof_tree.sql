@@ -6,12 +6,12 @@ FROM (
   SELECT a.*, b.en_label, c.numeric_id subclass_of_numeric_id, FORMAT('Q%i', c.numeric_id) subclass_of_id
   FROM (
     SELECT FORMAT('Q%i', numeric_id) id, ANY_VALUE(numeric_id) numeric_id, COUNT(DISTINCT id) c
-    FROM `fh-bigquery.wikidata.wikidata_latest_20190822_b`, UNNEST(instance_of)
+    FROM `fh-bigquery.wikidata.wikidata_latest_20190822_b`, UNNEST(subclass_of)
     GROUP BY 1 
   ) a
   JOIN `fh-bigquery.wikidata.wikidata_latest_20190822_b` b
   USING(id)
-  , UNNEST(instance_of) c
+  , UNNEST(subclass_of) c
 ) a
 LEFT JOIN `fh-bigquery.wikidata.wikidata_latest_20190822_b` b
 ON subclass_of_id = b.id
