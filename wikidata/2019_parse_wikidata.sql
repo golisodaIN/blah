@@ -130,7 +130,7 @@ LANGUAGE js AS """
     country: snaksNum(obj, 'P17'),
     occupation: snaksNum(obj, 'P106'),
     instrument: snaksNum(obj, 'P1303'),
-    genre: snaksNum, 'P136'),
+    genre: snaksNum(obj, 'P136'),
     industry: snaksNum(obj, 'P452'),
     subclass_of: snaksNum(obj, 'P279'),
     coordinate_location: snaksLoc(obj, 'P625'),
