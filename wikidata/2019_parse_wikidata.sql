@@ -98,7 +98,7 @@ LANGUAGE js AS """
     return snaks
   }
   function snaksNum(obj, pnumber) {
-    return snaksValue(obj, pnumber, 'numeric_id');
+    return snaks(obj, pnumber, 'numeric_id');
   }
   
   return {
