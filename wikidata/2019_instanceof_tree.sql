@@ -28,11 +28,12 @@ LOOP
 
     INSERT INTO `wikidata.instances_20190822_b`
 
-    SELECT DISTINCT a.id, a.numeric_id, a.c, a.en_label, b.instance_of_numeric_id, b.instance_of_id, b.instance_of_label, b.level+1 level
+    SELECT a.id, a.numeric_id, a.c, a.en_label, b.instance_of_numeric_id, b.instance_of_id, b.instance_of_label, MIN(b.level+1) level
     FROM `wikidata.instances_20190822_b` a
     JOIN `wikidata.instances_20190822_b` b
     ON a.instance_of_id = b.id
     WHERE CONCAT(a.id,b.instance_of_id) NOT IN (SELECT CONCAT(id,instance_of_id) FROM `wikidata.instances_20190822_b`)
+    GROUP BY 1,2,3,4,5,6,7
     ;
 
     SET row_diff = (SELECT COUNT(*) FROM `wikidata.instances_20190822_b`) - row_count;
