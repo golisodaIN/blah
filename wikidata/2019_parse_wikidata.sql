@@ -145,7 +145,7 @@ LANGUAGE js AS """
 
 CREATE OR REPLACE TABLE `wikidata.wikidata_latest_20190822`
 PARTITION BY fake_date
-CLUSTER BY en_wiki
+CLUSTER BY numeric_id
 AS
 
 SELECT parse(item).*, item, DATE('2000-01-01') fake_date
