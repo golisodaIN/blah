@@ -25,6 +25,7 @@ RETURNS STRUCT <
   ,gender ARRAY<STRUCT<numeric_id INT64>>
   ,date_of_birth ARRAY<STRUCT<time STRING>>
   ,date_of_death ARRAY<STRUCT<time STRING>>
+  ,place_of_birth ARRAY<STRUCT<numeric_id INT64>>
   ,country_of_citizenship ARRAY<STRUCT<numeric_id INT64>>
   ,country ARRAY<STRUCT<numeric_id INT64>>
   ,occupation ARRAY<STRUCT<numeric_id INT64>>
@@ -34,8 +35,8 @@ RETURNS STRUCT <
   ,subclass_of ARRAY<STRUCT<numeric_id INT64>>
   ,coordinate_location ARRAY<STRUCT<latitude FLOAT64, longitude FLOAT64>>
   ,iso_3166_alpha3 ARRAY<STRUCT<value STRING>> 
-  ,member_of ARRAY<STRUCT<value STRING>> 
-  ,from_fictional_universe ARRAY<STRUCT<value STRING>> 
+  ,member_of ARRAY<STRUCT<numeric_id STRING>> 
+  ,from_fictional_universe ARRAY<STRUCT<numeric_id STRING>> 
 >
 
 LANGUAGE js AS """
@@ -141,7 +142,7 @@ LANGUAGE js AS """
 
 """;
 
-CREATE OR REPLACE TABLE `wikidata.wikidata_latest_20190822_b`
+CREATE OR REPLACE TABLE `wikidata.wikidata_latest_20190822`
 PARTITION BY fake_date
 CLUSTER BY en_wiki
 AS
