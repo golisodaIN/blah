@@ -5,16 +5,16 @@ SELECT a.*, b.en_label subclass_of_label, 1 level
 FROM (
   SELECT a.*, b.en_label, c.numeric_id subclass_of_numeric_id, FORMAT('Q%i', c.numeric_id) subclass_of_id
   FROM (
-    SELECT FORMAT('Q%i', numeric_id) id, ANY_VALUE(numeric_id) numeric_id, COUNT(DISTINCT id) c
-    FROM `fh-bigquery.wikidata.wikidata_latest_20190822`, UNNEST(subclass_of)
+    SELECT FORMAT('Q%i', b.numeric_id) id, ANY_VALUE(b.numeric_id) numeric_id, COUNT(DISTINCT id) c
+    FROM `fh-bigquery.wikidata.wikidata_latest_20190822` a, UNNEST(subclass_of)b
     GROUP BY 1 
   ) a
   JOIN `fh-bigquery.wikidata.wikidata_latest_20190822` b
-  USING(id)
+  USING(numeric_id)
   , UNNEST(subclass_of) c
 ) a
 LEFT JOIN `fh-bigquery.wikidata.wikidata_latest_20190822` b
-ON subclass_of_id = b.id
+ON subclass_of_numeric_id = b.numeric_id
 ORDER BY c DESC
 ;
 
