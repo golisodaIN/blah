@@ -1,3 +1,5 @@
+# needs fixing - see instances, and only do numerical ids
+
 CREATE OR REPLACE TABLE `wikidata.instances_20190822`
 AS
 
