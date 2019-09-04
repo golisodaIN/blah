@@ -104,7 +104,7 @@ LANGUAGE js AS """
   
   return {
     id: obj.id,
-    numeric_id: parseInt(obj.id,substr(1)),
+    numeric_id: parseInt(obj.id.substr(1)),
     en_wiki: obj.sitelinks ? (obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null) : null,
     en_label: obj.labels.en ? obj.labels.en.value : null,
     en_description: obj.descriptions.en ? obj.descriptions.en.value : null,
