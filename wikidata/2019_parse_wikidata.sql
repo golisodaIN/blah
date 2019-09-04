@@ -35,8 +35,8 @@ RETURNS STRUCT <
   ,subclass_of ARRAY<STRUCT<numeric_id INT64>>
   ,coordinate_location ARRAY<STRUCT<latitude FLOAT64, longitude FLOAT64>>
   ,iso_3166_alpha3 ARRAY<STRUCT<value STRING>> 
-  ,member_of ARRAY<STRUCT<numeric_id STRING>> 
-  ,from_fictional_universe ARRAY<STRUCT<numeric_id STRING>> 
+  ,member_of ARRAY<STRUCT<numeric_id INT64>> 
+  ,from_fictional_universe ARRAY<STRUCT<numeric_id INT64>> 
 >
 
 LANGUAGE js AS """
