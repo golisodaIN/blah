@@ -1,6 +1,7 @@
 CREATE TEMP FUNCTION parse(item STRING)
 RETURNS STRUCT <
   id STRING
+  ,numeric_id INT64
   ,en_label STRING
   ,en_wiki STRING
   ,en_description STRING
@@ -104,6 +105,7 @@ LANGUAGE js AS """
   
   return {
     id: obj.id,
+    numeric_id: parseInt(obj.id),
     en_wiki: obj.sitelinks ? (obj.sitelinks.enwiki ? wikiEncode(obj.sitelinks.enwiki.title) : null) : null,
     en_label: obj.labels.en ? obj.labels.en.value : null,
     en_description: obj.descriptions.en ? obj.descriptions.en.value : null,
