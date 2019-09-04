@@ -21,7 +21,7 @@ FROM (
       LIMIT 1
     )
     AND en_wiki IS NOT null
-    AND ARRAY_LENGTH(sitelinks)>=11
+    AND ARRAY_LENGTH(sitelinks)>=40
   ) b
   ON a.title=b.en_wiki
   AND a.wiki='en'
