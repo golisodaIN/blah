@@ -143,13 +143,13 @@ LANGUAGE js AS """
 
 """;
 
-CREATE OR REPLACE TABLE `wikidata.wikidata_latest_20190822`
+CREATE OR REPLACE TABLE `wikidata.wikidata_2019`
 PARTITION BY fake_date
 CLUSTER BY numeric_id
 AS
 
 SELECT parse(item).*, item, DATE('2000-01-01') fake_date
-FROM `fh-bigquery.wikidata.latest_raw_20190822`   
+FROM `fh-bigquery.wikidata.raw_latest_2019`    
 WHERE LENGTH(item)>10
 AND (
   JSON_EXTRACT_SCALAR(item, '$.sitelinks.enwiki.title') IS NOT NULL
