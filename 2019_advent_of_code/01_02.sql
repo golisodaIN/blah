@@ -120,11 +120,11 @@ FROM data
 SET extra = (SELECT fuel(weight));
 
 LOOP
-  SET weight= weight+extra;
-  SET extra = (SELECT fuel(weight));
   IF extra<=0 THEN
     LEAVE;
-  END IF;
+  END IF;  
+  SET weight= weight+extra;
+  SET extra = (SELECT fuel(extra));
 END LOOP;
 
 SELECT weight
