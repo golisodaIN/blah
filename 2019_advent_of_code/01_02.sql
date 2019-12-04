@@ -1,17 +1,15 @@
-DECLARE weight FLOAT64;
-DECLARE extra FLOAT64;
+DECLARE weight FLOAT64 DEFAULT 0;
+DECLARE extra ARRAY<FLOAT64>;
 
 
 CREATE TEMP FUNCTION fuel(x ANY TYPE) AS (
- FLOOR(x/3)-2
+ GREATEST(0,FLOOR(x/3)-2)
 );
 
 
-SET weight = (
-
-WITH data AS (
-
-SELECT CAST(x AS INT64) x FROM  UNNEST(SPLIT("""64010
+SET extra = (
+  WITH data AS (
+    SELECT CAST(x AS INT64) x FROM  UNNEST(SPLIT("""64010
 104993
 95523
 87818
@@ -111,20 +109,17 @@ SELECT CAST(x AS INT64) x FROM  UNNEST(SPLIT("""64010
 130549
 114312
 79899""", '\n')) x
-)
-
-SELECT SUM(fuel(x))  x
-FROM data
+  )
+  SELECT ARRAY_AGG(fuel(x)) x FROM data
 );
-
-SET extra = (SELECT fuel(weight));
+ 
 
 LOOP
-  IF extra<=0 THEN
+  IF (SELECT SUM(x) FROM UNNEST(extra) x)<=0 THEN
     LEAVE;
   END IF;  
-  SET weight= weight+extra;
-  SET extra = (SELECT fuel(extra));
+  SET weight= weight+(SELECT SUM(x) FROM UNNEST(extra) x);
+  SET extra = (SELECT ARRAY_AGG(fuel(x)) x FROM UNNEST(extra) x);
 END LOOP;
 
 SELECT weight
