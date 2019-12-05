@@ -48,7 +48,6 @@ JOIN (
   ), UNNEST(GENERATE_ARRAY(x-move.x, x, IF(move.x>0,1,-1))) arr_x WITH OFFSET n1, UNNEST(GENERATE_ARRAY(y-move.y, y, IF(move.y>0,1,-1))) arr_y WITH OFFSET n2
 ) b
 USING(arr_x, arr_y)
-WHERE a.n+a.n1+a.n2>0 
-AND b.n+b.n1+b.n2>0
+WHERE a.rn>0 AND b.rn>0
 ORDER BY wire 
 LIMIT 1
