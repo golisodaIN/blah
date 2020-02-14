@@ -24,7 +24,10 @@ WITH data AS (
 
 
 SELECT CASE link_flair_text 
-  cd 
+    WHEN 'not the a-hole' THEN 'no asshole'
+    WHEN 'no a-holes here' THEN 'no asshole'
+    WHEN 'everyone sucks' THEN 'asshole'
+    WHEN 'asshole' THEN 'asshole'
   END judgement
   , *
 FROM gendered_data
