@@ -31,5 +31,4 @@ SELECT CASE link_flair_text
   END judgement
   , *
 FROM gendered_data
-WHERE subreddit = 'AmItheAsshole'
 AND link_flair_text IS NOT NULL
