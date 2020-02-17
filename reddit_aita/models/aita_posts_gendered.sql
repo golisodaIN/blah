@@ -31,4 +31,4 @@ SELECT CASE link_flair_text
   END judgement
   , *
 FROM gendered_data
-AND link_flair_text IS NOT NULL
+WHERE link_flair_text IS NOT NULL
