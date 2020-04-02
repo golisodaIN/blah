@@ -1,3 +1,5 @@
+# https://medium.com/@hoffa/covid-19-arima-predictions-are-worthless-f34e52139769
+
 CREATE OR REPLACE MODEL temp.numreports_forecast
 OPTIONS(model_type='ARIMA',
        time_series_data_col='num_reports',
