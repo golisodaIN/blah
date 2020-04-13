@@ -1,7 +1,7 @@
 SELECT
   a.county_name,
-  _4_10_20*10 as num_cases, -- Change date as needed
-  county_geom AS map_marker
+  _4_10_20 as num_cases, -- Change date as needed
+  county_geom AS the_geom
 FROM `bigquery-public-data.covid19_usafacts.confirmed_cases` a
 JOIN `bigquery-public-data.geo_us_boundaries.counties` b
 ON CAST(a.county_fips_code as string) 
