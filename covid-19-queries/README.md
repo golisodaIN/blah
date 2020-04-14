@@ -9,7 +9,7 @@ Please leave any comments, questions, and suggestions on reddit:
 
 You can also give us direct feedback through our email address, or file requests in our issue tracker:
 
-public-data-help@google.com
-https://issuetracker.google.com/issues?q=componentid:858131%20status:open
+- public-data-help@google.com
+- https://issuetracker.google.com/issues?q=componentid:858131%20status:open
 
 
