@@ -9,9 +9,10 @@ WITH data AS (
   FROM `fh-bigquery.temp.latestAppleCovidData` a
     , UNNEST(fhoffa.x.cast_kv_array_to_date_float(
       fhoffa.x.unpivot(a, '_2020'), '_%Y_%m_%d')) unpivotted
+  WHERE a._2020_04_27 IS NOT NULL
 ), annotated_data AS (
   SELECT *
-    , -1+EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date
+    , -1+EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
       rows between 6 preceding and current row)) avg7day 
     , geo_type||transportation_type||region series_id
   FROM data
