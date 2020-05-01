@@ -16,7 +16,17 @@ WITH data AS (
       rows between 6 preceding and current row)) avg7day 
     , geo_type||transportation_type||region series_id
   FROM data
+), lat_lons AS  (
+  SELECT region, latlon || ROW_NUMBER() OVER(PARTITION BY latlon ORDER BY region) latlon
+  FROM (
+    SELECT region, ROUND(ST_Y(centroid),7)||','||ROUND(ST_X(centroid),7) latlon
+    FROM (
+      SELECT geoid region, ST_CENTROID(geom) centroid
+      FROM `carto-do-public-data.glo_covid19_apple.geography_glo_locations_v1`
+    )
+  )
 )
+
 SELECT *, ROW_NUMBER() OVER(ORDER BY current_percent) rank 
 FROM (
   SELECT *
@@ -27,4 +37,7 @@ FROM (
        ) current_percent
     , (SELECT MIN(date) FROM annotated_data WHERE a.series_id=series_id AND avg7day<-.25) first_drop_date 
   FROM annotated_data a
+  LEFT JOIN lat_lons b
+  USING(region)
 )
+
