@@ -36,9 +36,9 @@ WITH data AS (
     , geo_type||transportation_type||region series_id
   FROM data
 ), lat_lons AS  (
-  SELECT region, latlon || ROW_NUMBER() OVER(PARTITION BY latlon ORDER BY region) latlon, geohash, SUBSTR(geohash, 0, 1) gh1, SUBSTR(geohash, 0, 2) gh2
+  SELECT region, latlon || ROW_NUMBER() OVER(PARTITION BY latlon ORDER BY region) latlon, geohash, SUBSTR(geohash, 0, 1) gh1, SUBSTR(geohash, 0, 2) gh2, centroid
   FROM (
-    SELECT region, ROUND(ST_Y(centroid),7)||','||ROUND(ST_X(centroid),7) latlon, ST_GEOHASH(centroid) geohash
+    SELECT region, ROUND(ST_Y(centroid),7)||','||ROUND(ST_X(centroid),7) latlon, ST_GEOHASH(centroid) geohash, centroid
     FROM (
       SELECT geoid region, ST_CENTROID(geom) centroid
       FROM `carto-do-public-data.glo_covid19_apple.geography_glo_locations_v1`
@@ -59,4 +59,3 @@ FROM (
   LEFT JOIN lat_lons b
   USING(region)
 )
-
