@@ -32,7 +32,8 @@ WITH data AS (
       ELSE EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
         rows between 6 preceding and current row)) 
     END avg7day  
-      
+    , EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        rows between 6 preceding and current row)) strict_avg7day
     , geo_type||transportation_type||region series_id
   FROM data
 ), lat_lons AS  (
