@@ -1,10 +1,10 @@
 CREATE OR REPLACE TABLE 
-  `fh-bigquery.public_dump.applemobilitytrends`
+  `fh-bigquery.public_dump.applemobilitytrends_v2`
 OPTIONS (
   description="https://www.apple.com/covid19/mobility"
 ) AS
 WITH data AS (
-  SELECT geo_type, region, transportation_type, unpivotted.*
+  SELECT geo_type, region, transportation_type, sub_region, country, unpivotted.*
     , LEAST(-1 + value/100, 0.2) percent
   FROM `fh-bigquery.temp.latestAppleCovidData` a
     , UNNEST(fhoffa.x.cast_kv_array_to_date_float(
@@ -15,41 +15,40 @@ WITH data AS (
     , -1+
       CASE 
         WHEN DATE_DIFF(CURRENT_DATE(), date,  DAY) < 4
-        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 0 preceding and current row)) 
         WHEN DATE_DIFF(CURRENT_DATE(), date,  DAY) < 11
-        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 2 preceding and current row)) 
         WHEN DATE_DIFF(CURRENT_DATE(), date,  DAY) < 18
-        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 3 preceding and current row)) 
         WHEN DATE_DIFF(CURRENT_DATE(), date,  DAY) < 25
-        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 4 preceding and current row)) 
         WHEN DATE_DIFF(CURRENT_DATE(), date,  DAY) < 32
-        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        THEN EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 5 preceding and current row))       
-        ELSE EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
+        ELSE EXP(AVG(LOG(1+percent)) OVER(PARTITION BY series_id ORDER BY date DESC
           rows between 6 preceding and current row)) 
       END avg7day  
     , EXP(AVG(LOG(1+percent)) OVER(PARTITION BY geo_type, region, transportation_type ORDER BY date DESC
         rows between 6 preceding and current row)) strict_avg7day
-    , geo_type||transportation_type||region series_id
-  FROM data
+  FROM (SELECT *, geo_type||transportation_type||region||IFNULL(sub_region,'*')||IFNULL(country,'*') series_id FROM data)
 ), lat_lons AS  (
   SELECT * EXCEPT(latlon), latlon || ROW_NUMBER() OVER(PARTITION BY latlon ORDER BY region) latlon, SUBSTR(geohash, 0, 2) gh2
   FROM (
     SELECT *, ROUND(ST_Y(centroid),7)||','||ROUND(ST_X(centroid),7) latlon, ST_GEOHASH(centroid) geohash
     FROM (
       SELECT geoid region, ST_CENTROID(geom) centroid, country, geo_type carto_geotype, region carto_region
-      FROM `carto-do-public-data.glo_covid19_apple.geography_glo_locations_v1`
+      FROM `carto-do-public-data.apple.geography_glo_regions_v1` 
     )
   )
 )
 
 SELECT *, ROW_NUMBER() OVER(ORDER BY current_percent) rank 
 FROM (
-  SELECT *
+  SELECT a.* EXCEPT(region), b.* EXCEPT(country)
     , (SELECT percent 
        FROM annotated_data 
        WHERE a.series_id=series_id 
