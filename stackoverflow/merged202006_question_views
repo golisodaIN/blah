@@ -1,0 +1,22 @@
+CREATE TABLE `stackoverflow_archive_questions.merged202006_question_views`
+CLUSTER BY tag
+AS
+
+WITH data AS (
+  SELECT *, PARSE_DATE('%Y%m%d', _table_suffix||'01') quarter
+  FROM `fh-bigquery.stackoverflow_archive_questions.q*`
+), last_data AS (
+  SELECT id, ARRAY_AGG(STRUCT(tags, title) ORDER BY quarter DESC LIMIT 1)[OFFSET(0)] info, 
+  FROM data
+  GROUP BY id
+), quarter_and_last AS (
+  SELECT id
+    , quarter
+    , view_count - IFNULL(LAG(view_count) OVER(PARTITION BY id ORDER BY quarter),0) quarter_views
+    , (SELECT info FROM last_data WHERE id=a.id) info
+  FROM data a
+)
+
+
+SELECT * EXCEPT(info), info.title
+FROM quarter_and_last, UNNEST(SPLIT(info.tags,'|')) tag
