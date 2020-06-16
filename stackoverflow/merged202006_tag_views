@@ -1,0 +1,18 @@
+CREATE OR REPLACE TABLE `stackoverflow_archive_questions.merged202006_tag_views`
+CLUSTER BY tag
+AS
+
+SELECT * 
+FROM (
+  SELECT *, COUNT(DISTINCT tag) OVER() total_distinct_tags
+  FROM (
+    SELECT *, MAX(quarter_views) OVER(PARTITION BY tag) total_tag_views
+    FROM (
+      SELECT tag, quarter, SUM(quarter_views) quarter_views 
+      FROM `stackoverflow_archive_questions.merged202006_question_views`
+      GROUP BY tag, quarter
+      HAVING quarter_views > 0
+    )
+  )
+  WHERE total_tag_views>20000
+)
