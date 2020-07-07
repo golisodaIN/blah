@@ -8,7 +8,7 @@ FROM (
       , 10000*quarter_views/SUM(quarter_views) OVER(PARTITION BY quarter) ratio
     FROM (
       SELECT tag, quarter, SUM(quarter_views) quarter_views 
-      FROM {{ref('source_merged202006_question_views')}}
+      FROM {{ref('source_question_views')}}
       WHERE quarter>'2017-03-01'
 
 {%- if is_incremental() -%}

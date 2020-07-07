@@ -3,7 +3,7 @@
 WITH data AS (
   SELECT tag, SUM(quarter_views) total_views
     , ARRAY_AGG(STRUCT(quarter, quarter_views, ratio) ORDER BY quarter DESC) stats_arr
-  FROM {{ref('merged202006_tag_views')}}
+  FROM {{ref('tag_views')}}
   GROUP BY 1
 ), stats AS (
   SELECT *
