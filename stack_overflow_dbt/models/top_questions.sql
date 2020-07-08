@@ -1,3 +1,8 @@
+{{ config(materialized='table'
+  , partition_by={'field': 'quarter', 'data_type': 'date'}
+  , cluster_by='tag' ) }}
+
+
 WITH stats AS (
   SELECT tag, id
     , SUM(IF(quarter='2020-06-01', quarter_views, null)) last_quarter

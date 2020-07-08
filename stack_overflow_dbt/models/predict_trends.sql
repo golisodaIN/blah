@@ -12,7 +12,7 @@ AS SELECT tag, ratio
 FROM `stackoverflow_dbt.tag_views`
 WHERE tag IN (
   SELECT tag
-  FROM `stackoverflow_dbt.stats_tag`
+  FROM `stackoverflow_dbt.stats_tags`
   ORDER BY rank_current
   LIMIT 15000  
 )
